@@ -70,7 +70,7 @@ using (var context = new ItemDb())
 
         foreach (KeyValuePair<string, Item> item in itemList)
         {
-            string year = item.Key;
+            //string _itemid = item.Key; //The json object array does not contain static attributes--the attribute is dynamic item ids
             Item _item = item.Value;
 
             //Console.WriteLine("Adding " + _item.Name);
