@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Parser.Models
 {
-    [Index(nameof(ItemId))]
+    [Index(nameof(ItemId), IsUnique = true)]
     public class ItemList
     {
         [Key]
