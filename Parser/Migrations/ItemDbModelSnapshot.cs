@@ -30,9 +30,6 @@ namespace Parser.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ItemListId")
                         .HasColumnType("int");
 
@@ -47,6 +44,8 @@ namespace Parser.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ItemListId");
+
+                    b.HasIndex("CurrentPrice", "Date");
 
                     b.ToTable("ItemHistory");
                 });
@@ -93,6 +92,8 @@ namespace Parser.Migrations
                         .HasColumnType("VARCHAR(80)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ItemId", "Name");
 
                     b.ToTable("ItemList");
                 });

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Parser.Models
 {
-  //  [Index(nameof(CurrentPrice), nameof(Date))]
+    [Index(nameof(CurrentPrice), nameof(Date))]
     public class ItemData
     {
         public int Id { get; set; }
@@ -14,8 +14,6 @@ namespace Parser.Models
         public string Trend { get; set; } = null!;
         public double TrendValue { get; set; }
         public DateTime Date { get; set; }
-        public int ItemId { get; set; }
-     //   [ForeignKey("ItemId")]
         public int ItemListId { get; set; }
         public virtual ItemList? ItemList { get; set; }
     }

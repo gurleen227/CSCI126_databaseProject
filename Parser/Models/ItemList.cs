@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Parser.Models
 {
+    [Index(nameof(ItemId), nameof(Name))]
     public class ItemList
     {
         public ItemList()

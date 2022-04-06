@@ -120,10 +120,9 @@ foreach (string file in fileList)
         itemDataToAdd.Add(itemData);
     }
     //await context.ItemHistory.AddRangeAsync(itemDataToAdd);
-
     // Console.WriteLine(context.ChangeTracker.DebugView.LongView);
-
     //await context.SaveChangesAsync();
+    
     if (currentFile % 25 == 0 || (currentFile == fileCount))
     {
         Console.Write("\tDetecting changes...");

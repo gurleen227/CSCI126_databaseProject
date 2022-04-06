@@ -40,7 +40,6 @@ namespace Parser.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TrendValue = table.Column<double>(type: "double", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
                     ItemListId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -80,6 +79,11 @@ namespace Parser.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ItemHistory_CurrentPrice_Date",
+                table: "ItemHistory",
+                columns: new[] { "CurrentPrice", "Date" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ItemHistory_ItemListId",
                 table: "ItemHistory",
                 column: "ItemListId");
@@ -89,6 +93,11 @@ namespace Parser.Migrations
                 table: "ItemIcons",
                 column: "ItemId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemList_ItemId_Name",
+                table: "ItemList",
+                columns: new[] { "ItemId", "Name" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
