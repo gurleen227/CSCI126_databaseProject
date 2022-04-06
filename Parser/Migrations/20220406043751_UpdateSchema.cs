@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Parser.Migrations
 {
-    public partial class InitialSchema : Migration
+    public partial class UpdateSchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,13 +20,13 @@ namespace Parser.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ItemId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "VARCHAR(80)", maxLength: 80, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CurrentPrice = table.Column<double>(type: "double", nullable: false),
-                    Trend = table.Column<string>(type: "longtext", nullable: false)
+                    Trend = table.Column<string>(type: "VARCHAR(10)", maxLength: 10, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TrendValue = table.Column<double>(type: "double", nullable: false),
-                    ImageIcon = table.Column<string>(type: "longtext", nullable: false)
+                    ImageIcon = table.Column<string>(type: "VARCHAR(90)", maxLength: 90, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Date = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -58,7 +58,8 @@ namespace Parser.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Items_ItemId",
                 table: "Items",
-                column: "ItemId");
+                column: "ItemId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

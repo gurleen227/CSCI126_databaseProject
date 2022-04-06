@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Parser.Migrations
 {
     [DbContext(typeof(ItemDb))]
-    [Migration("20220213040044_MoreStrictKeyConstraints")]
-    partial class MoreStrictKeyConstraints
+    [Migration("20220406043751_UpdateSchema")]
+    partial class UpdateSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Parser.Models.ItemData", b =>
@@ -34,18 +34,21 @@ namespace Parser.Migrations
 
                     b.Property<string>("ImageIcon")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(90)
+                        .HasColumnType("VARCHAR(90)");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(80)
+                        .HasColumnType("VARCHAR(80)");
 
                     b.Property<string>("Trend")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(10)
+                        .HasColumnType("VARCHAR(10)");
 
                     b.Property<double>("TrendValue")
                         .HasColumnType("double");

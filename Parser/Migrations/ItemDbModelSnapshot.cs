@@ -15,7 +15,7 @@ namespace Parser.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Parser.Models.ItemData", b =>
@@ -32,18 +32,21 @@ namespace Parser.Migrations
 
                     b.Property<string>("ImageIcon")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(90)
+                        .HasColumnType("VARCHAR(90)");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(80)
+                        .HasColumnType("VARCHAR(80)");
 
                     b.Property<string>("Trend")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(10)
+                        .HasColumnType("VARCHAR(10)");
 
                     b.Property<double>("TrendValue")
                         .HasColumnType("double");
