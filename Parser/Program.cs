@@ -17,7 +17,7 @@ context.Database.EnsureCreated();
 Console.WriteLine("Disabling auto detect changes for bulk insert");
 context.ChangeTracker.AutoDetectChangesEnabled = false;
 
-var fileList = Directory.EnumerateFiles("/Users/patron/Documents/GitHub/126/Parser/json_data", "*.json");
+var fileList = Directory.EnumerateFiles("json_data", "*.json");
 var fileCount = fileList.Count();
 var currentFile = 1;
 
@@ -26,10 +26,10 @@ Console.WriteLine("Files Found: " + fileCount);
 List<double> averageProcessTime = new();
 
 // Keep track of item ids
-HashSet<int> DbHashSet = new();
+Dictionary<int, ItemList> DbHashSet = new();
 // Get the current items in the DB
 // We want unique items and no duplicates to later join to the item data
-var currItems = await context.Items.ToListAsync();
+var currItems = await context.ItemList.ToListAsync();
 
 // List containing new items to add to the history table
 List<ItemData> itemDataToAdd = new();
@@ -39,7 +39,7 @@ HashSet<int> currItemDataHashSet = new();
 //Populate hashset with current items in the DB:
 foreach (ItemList v in currItems)
 {
-    DbHashSet.Add(v.ItemId);
+    DbHashSet.Add(v.ItemId, v);
 }
 
 foreach (string file in fileList)
@@ -76,7 +76,7 @@ foreach (string file in fileList)
     }
 
     currItemDataHashSet.Clear();// Reset the item db hash set
-    itemDataToAdd.Clear(); // Clear all elements in the insert list
+    //itemDataToAdd.Clear(); // Clear all elements in the insert list
 
     foreach (KeyValuePair<string, Item> item in itemList)
     {
@@ -84,24 +84,29 @@ foreach (string file in fileList)
         Item _item = item.Value;
 
         //Console.WriteLine("Adding " + _item.Name);
-        if (!DbHashSet.Contains(_item.Id))
+        if (!DbHashSet.ContainsKey(_item.Id))
         { // Powdered Wig sometimes appears twice--this fixes any other potential issues as well
             var createItem = new ItemList
             {
                 ItemId = _item.Id,
+                Name = _item.Name,
+                Icon = new ItemIcon
+                {
+                    Description = _item.Descripton ?? string.Empty,
+                    ImageIcon = (_item.IconLarge ?? _item.Icon) ?? string.Empty,
+                },
             };
-            await context.Items.AddAsync(createItem);
-            DbHashSet.Add(_item.Id);
+            await context.ItemList.AddAsync(createItem);
+            currItems.Append(createItem);
+            DbHashSet.Add(_item.Id, createItem);
         }
 
         var itemData = new ItemData
         {
-            ItemId = _item.Id,
-            Name = _item.Name,
+            ItemList = DbHashSet[_item.Id],
             CurrentPrice = _item.Current.Price,
             Trend = _item.Today.Trend,
             TrendValue = _item.Today.Price,
-            ImageIcon = (_item.IconLarge ?? _item.Icon) ?? string.Empty,
             Date = dateValue,
         };
 
@@ -114,15 +119,23 @@ foreach (string file in fileList)
         currItemDataHashSet.Add(_item.Id);
         itemDataToAdd.Add(itemData);
     }
-    await context.ItemHistory.AddRangeAsync(itemDataToAdd);
+    //await context.ItemHistory.AddRangeAsync(itemDataToAdd);
+
+    // Console.WriteLine(context.ChangeTracker.DebugView.LongView);
 
     //await context.SaveChangesAsync();
     if (currentFile % 25 == 0 || (currentFile == fileCount))
     {
+        Console.Write("\tDetecting changes...");
+        await context.ItemHistory.AddRangeAsync(itemDataToAdd);
+        context.ChangeTracker.DetectChanges();
+        Console.WriteLine(" Done!");
+
         Console.Write("\tInserting items into DB...");
         await context.SaveChangesAsync();
-
-        context.Dispose();
+        // Console.WriteLine(context.ChangeTracker.DebugView.LongView);
+        // context.Dispose();
+        itemDataToAdd.Clear(); // Clear all elements in the insert list
 
         // Clean up memory
         Console.WriteLine("\n\tRunning garbage collector: {0:N0}", GC.GetTotalMemory(false));
@@ -131,8 +144,10 @@ foreach (string file in fileList)
         Console.WriteLine("\tMemory Usage:              {0:N0}", GC.GetTotalMemory(true));
 
         // Start new instance
-        context = new ItemDb();
-        context.ChangeTracker.AutoDetectChangesEnabled = false;
+        //  context = new ItemDb();
+        // currItems.Clear();
+        //  currItems = await context.ItemList.ToListAsync();
+        // context.ChangeTracker.AutoDetectChangesEnabled = false;
     }
     stopWatch.Stop();
     TimeSpan ts = stopWatch.Elapsed;
@@ -152,7 +167,7 @@ context.Dispose();
 Console.WriteLine("\nFinished");
 using (var tmp_context = new ItemDb())
 {
-    var itemCount = await tmp_context.Items.CountAsync();
+    var itemCount = await tmp_context.ItemList.CountAsync();
     Console.WriteLine("Total unique items tracked: " + itemCount);
 
     var historyCount = await tmp_context.ItemHistory.CountAsync();
