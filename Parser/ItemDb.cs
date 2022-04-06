@@ -9,7 +9,7 @@ public class ItemDb : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySql("server=localhost;database=itemdb;user=root;password=scape", new MariaDbServerVersion(new Version(10, 6, 5)));
+        optionsBuilder.UseMySql("server=localhost;database=itemdb;user=root;password=scape", new MariaDbServerVersion(new Version(10, 7, 3)));
     }
 
 }
