@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Parser.Migrations
 {
     [DbContext(typeof(ItemDb))]
-    [Migration("20220406093047_InitialSchema")]
+    [Migration("20220406094005_InitialSchema")]
     partial class InitialSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace Parser.Migrations
 
             modelBuilder.Entity("Parser.Models.ItemData", b =>
                 {
-                    b.Property<int>("ItemDataId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -46,7 +46,7 @@ namespace Parser.Migrations
                     b.Property<double>("TrendValue")
                         .HasColumnType("double");
 
-                    b.HasKey("ItemDataId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ItemListId");
 
@@ -55,7 +55,7 @@ namespace Parser.Migrations
 
             modelBuilder.Entity("Parser.Models.ItemIcon", b =>
                 {
-                    b.Property<int>("ItemIconId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -72,7 +72,7 @@ namespace Parser.Migrations
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.HasKey("ItemIconId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ItemId")
                         .IsUnique();

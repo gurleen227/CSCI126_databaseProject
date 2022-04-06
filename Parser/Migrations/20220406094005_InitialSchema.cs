@@ -33,7 +33,7 @@ namespace Parser.Migrations
                 name: "ItemHistory",
                 columns: table => new
                 {
-                    ItemDataId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CurrentPrice = table.Column<double>(type: "double", nullable: false),
                     Trend = table.Column<string>(type: "VARCHAR(10)", maxLength: 10, nullable: false)
@@ -45,7 +45,7 @@ namespace Parser.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemHistory", x => x.ItemDataId);
+                    table.PrimaryKey("PK_ItemHistory", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ItemHistory_ItemList_ItemListId",
                         column: x => x.ItemListId,
@@ -59,7 +59,7 @@ namespace Parser.Migrations
                 name: "ItemIcons",
                 columns: table => new
                 {
-                    ItemIconId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Description = table.Column<string>(type: "VARCHAR(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -69,7 +69,7 @@ namespace Parser.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemIcons", x => x.ItemIconId);
+                    table.PrimaryKey("PK_ItemIcons", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ItemIcons_ItemList_ItemId",
                         column: x => x.ItemId,
