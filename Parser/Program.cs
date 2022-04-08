@@ -122,7 +122,7 @@ foreach (string file in fileList)
     //await context.ItemHistory.AddRangeAsync(itemDataToAdd);
     // Console.WriteLine(context.ChangeTracker.DebugView.LongView);
     //await context.SaveChangesAsync();
-    
+
     if (currentFile % 25 == 0 || (currentFile == fileCount))
     {
         Console.Write("\tDetecting changes...");
@@ -141,12 +141,6 @@ foreach (string file in fileList)
         GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
         GC.Collect();
         Console.WriteLine("\tMemory Usage:              {0:N0}", GC.GetTotalMemory(true));
-
-        // Start new instance
-        //  context = new ItemDb();
-        // currItems.Clear();
-        //  currItems = await context.ItemList.ToListAsync();
-        // context.ChangeTracker.AutoDetectChangesEnabled = false;
     }
     stopWatch.Stop();
     TimeSpan ts = stopWatch.Elapsed;
