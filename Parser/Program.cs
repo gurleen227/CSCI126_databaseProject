@@ -96,7 +96,14 @@ foreach (string file in fileList)
                     ImageIcon = (_item.IconLarge ?? _item.Icon) ?? string.Empty,
                 },
             };
+
+            var addMemberStatus = new ItemStatus
+            {
+                ItemId = _item.Id,
+                MembersOnly = _item.Members
+            };
             await context.ItemList.AddAsync(createItem);
+            await context.ItemStatuses.AddAsync(addMemberStatus);
             currItems.Append(createItem);
             DbHashSet.Add(_item.Id, createItem);
         }

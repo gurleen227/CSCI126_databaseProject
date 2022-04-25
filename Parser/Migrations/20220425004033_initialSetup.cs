@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Parser.Migrations
 {
-    public partial class InitialSchema : Migration
+    public partial class initialSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,15 +17,29 @@ namespace Parser.Migrations
                 name: "ItemList",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ItemId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ItemId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "VARCHAR(80)", maxLength: 80, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemList", x => x.Id);
+                    table.PrimaryKey("PK_ItemList", x => x.ItemId);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ItemStatuses",
+                columns: table => new
+                {
+                    ItemId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    MembersOnly = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemStatuses", x => x.ItemId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -49,7 +63,7 @@ namespace Parser.Migrations
                         name: "FK_ItemHistory_ItemList_ItemListId",
                         column: x => x.ItemListId,
                         principalTable: "ItemList",
-                        principalColumn: "Id",
+                        principalColumn: "ItemId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -58,22 +72,20 @@ namespace Parser.Migrations
                 name: "ItemIcons",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    ItemId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "VARCHAR(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ImageIcon = table.Column<string>(type: "VARCHAR(90)", maxLength: 90, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ItemId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemIcons", x => x.Id);
+                    table.PrimaryKey("PK_ItemIcons", x => x.ItemId);
                     table.ForeignKey(
                         name: "FK_ItemIcons_ItemList_ItemId",
                         column: x => x.ItemId,
                         principalTable: "ItemList",
-                        principalColumn: "Id",
+                        principalColumn: "ItemId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -89,12 +101,6 @@ namespace Parser.Migrations
                 column: "ItemListId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemIcons_ItemId",
-                table: "ItemIcons",
-                column: "ItemId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ItemList_ItemId_Name",
                 table: "ItemList",
                 columns: new[] { "ItemId", "Name" });
@@ -107,6 +113,9 @@ namespace Parser.Migrations
 
             migrationBuilder.DropTable(
                 name: "ItemIcons");
+
+            migrationBuilder.DropTable(
+                name: "ItemStatuses");
 
             migrationBuilder.DropTable(
                 name: "ItemList");

@@ -12,7 +12,6 @@ namespace Parser.Models
             this.ItemData = new HashSet<ItemData>();
         }
         [Key]
-        public int Id { get; set; }
         public int ItemId { get; set; }
         [Column(TypeName = "VARCHAR")]
         [StringLength(80)]

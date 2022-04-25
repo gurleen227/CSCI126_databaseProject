@@ -7,6 +7,7 @@ public class ItemDb : DbContext
     public DbSet<ItemList> ItemList { get; set; } = null!;
     public DbSet<ItemIcon> ItemIcons { get; set; } = null!;
     public DbSet<ItemData> ItemHistory { get; set; } = null!;
+    public DbSet<ItemStatus> ItemStatuses { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

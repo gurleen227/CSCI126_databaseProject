@@ -52,8 +52,7 @@ namespace Parser.Migrations
 
             modelBuilder.Entity("Parser.Models.ItemIcon", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ItemId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -66,24 +65,15 @@ namespace Parser.Migrations
                         .HasMaxLength(90)
                         .HasColumnType("VARCHAR(90)");
 
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId")
-                        .IsUnique();
+                    b.HasKey("ItemId");
 
                     b.ToTable("ItemIcons");
                 });
 
             modelBuilder.Entity("Parser.Models.ItemList", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
                     b.Property<int>("ItemId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -91,11 +81,25 @@ namespace Parser.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("VARCHAR(80)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ItemId");
 
                     b.HasIndex("ItemId", "Name");
 
                     b.ToTable("ItemList");
+                });
+
+            modelBuilder.Entity("Parser.Models.ItemStatus", b =>
+                {
+                    b.Property<int>("ItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("MembersOnly")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("ItemId");
+
+                    b.ToTable("ItemStatuses");
                 });
 
             modelBuilder.Entity("Parser.Models.ItemData", b =>
