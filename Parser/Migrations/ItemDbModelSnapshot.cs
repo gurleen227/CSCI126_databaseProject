@@ -45,7 +45,9 @@ namespace Parser.Migrations
 
                     b.HasIndex("ItemListId");
 
-                    b.HasIndex("CurrentPrice", "Date");
+                    b.HasIndex("CurrentPrice", "ItemListId");
+
+                    b.HasIndex("Date", "ItemListId");
 
                     b.ToTable("ItemHistory");
                 });

@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Parser.Models
 {
-    [Index(nameof(CurrentPrice), nameof(Date))]
+    [Index(nameof(CurrentPrice), nameof(ItemListId))]
+    [Index(nameof(Date), nameof(ItemListId))]
     public class ItemData
     {
         public int Id { get; set; }
