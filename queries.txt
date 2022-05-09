@@ -14,7 +14,20 @@ FROM itemlist NATURAL JOIN itemstatuses
 WHER Name=”Cannonball”;
 
 --Query 3 - Sub Query example
-Add Yours Kyle
+select list.ItemId,
+list.Name,
+round(history.Prices, 2) as 'Average Prices',
+list.MembersOnly as 'Members Only?'
+from (
+	select b.Name, b.ItemId, a.MembersOnly from ItemList as b
+	join ItemStatuses as a on a.ItemId = b.ItemId
+) as list
+join (
+	select ItemListId, AVG(ItemHistory.CurrentPrice) as Prices from ItemHistory
+	group by ItemListId
+) as history on list.ItemId = history.ItemListId
+where list.MembersOnly = 'false'
+order by history.Prices desc
 
 --Query 4 - Aggregation query example
 SELECT Name, ItemListId AS ItemID, min(CurrentPrice) AS Min FROM
@@ -31,7 +44,10 @@ INSERT INTO ItemAverages  (ItemId, AveragePrice)
 
 
 --Query 6 - Insert query example
-ADD Yours Kyle
+INSERT INTO ItemAverages  (ItemId, AveragePrice)
+    select  ItemListId, AVG(CurrentPrice)
+    from ItemHistory
+    group by ItemListId;
 
 
 -Query 7 - Update query example
@@ -53,3 +69,4 @@ WHERE Trend = "positive"
 GROUP BY Date
 Order by NumPos DESC
 LIMIT 10;
+
