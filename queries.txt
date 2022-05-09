@@ -13,6 +13,7 @@ SELECT itemlist.Name, itemlist.ItemId AS IdNumber, itemstatuses.MembersOnly AS I
 FROM itemlist NATURAL JOIN itemstatuses
 WHER Name=”Cannonball”;
 
+
 --Query 3 - Sub Query example
 select list.ItemId,
 list.Name,
@@ -29,11 +30,23 @@ join (
 where list.MembersOnly = 'false'
 order by history.Prices desc
 
+
 --Query 4 - Aggregation query example
 SELECT Name, ItemListId AS ItemID, min(CurrentPrice) AS Min FROM
 	(SELECT itemhistory.ItemListId, itemhistory.CurrentPrice, itemlist.Name, itemlist.ItemId
 	FROM itemhistory JOIN itemlist
 	WHERE itemListId = ItemId AND Name="Avantoe") myTable;
+
+
+--Query 4.5 - Aggregation query example
+select Name, round(AVG(CurrentPrice), 2) as 'Average Monthly Price',
+DATE_FORMAT(Date, '%Y-%m-%d') as 'Date'
+from (
+	ItemHistory as b join ItemList as a on a.ItemId = b.ItemListId
+)
+where Name = 'Nature rune'
+group by Name, DATE_FORMAT(Date, '%Y-%m')
+order by Date DESC
 
 
 --Query 5 - Aggreagtion query example
@@ -55,12 +68,14 @@ UPDATE itemicons
 SET ImageIcon = REPLACE(ImageIcon, '1644242624151', '1651660195037')
 WHERE ItemId > 1;
 
+
 --Query 8 - Other query
 SELECT itemlist.Name, itemhistory.Date, itemhistory.ItemListId, itemhistory.TrendValue 
 FROM itemlist natural join itemhistory 
 WHERE itemhistory.ItemListId = itemlist.ItemId
 ORDER BY TrendValue DESC 
 LIMIT 10;
+
 
 --Query 9 -- Other query
 SELECT Date, COUNT(Date) AS NumPos,Trend
@@ -69,4 +84,3 @@ WHERE Trend = "positive"
 GROUP BY Date
 Order by NumPos DESC
 LIMIT 10;
-
