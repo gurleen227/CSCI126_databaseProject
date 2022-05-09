@@ -1,0 +1,41 @@
+--Queries
+
+-- Query 1 - Sub query example
+
+SELECT ItemListId AS Item, avg(CurrentPrice) AS AveragePrice FROM (
+SELECT CurrentPrice, ItemListId
+FROM itemhistory
+WHERE ItemListId = 13265) myTable;
+
+
+--Query 2 - Sub Query example
+SELECT itemlist.Name, itemlist.ItemId AS IdNumber, itemstatuses.MembersOnly AS IsMembersOnly
+FROM itemlist NATURAL JOIN itemstatuses
+WHER Name=”Cannonball”;
+
+--Query 3 - Sub Query example
+Add Yours Kyle
+
+--Query 4 - Aggregation query example
+SELECT Name, ItemListId AS ItemID, min(CurrentPrice) AS Min FROM
+	(SELECT itemhistory.ItemListId, itemhistory.CurrentPrice, itemlist.Name, itemlist.ItemId
+	FROM itemhistory JOIN itemlist
+	WHERE itemListId = ItemId AND Name="Avantoe") myTable;
+
+
+--Query 5 - Aggreagtion query example
+INSERT INTO ItemAverages  (ItemId, AveragePrice)
+	SELECT  ItemListId, AVG(CurrentPrice)
+	FROM ItemHistory
+	GROUP BY ItemListId;
+
+
+--Query 6 - Insert query example
+ADD Yours Kyle
+
+
+-Query 7 - Update query example
+UPDATE itemicons
+SET ImageIcon = REPLACE(ImageIcon, '1644242624151', '1651660195037')
+WHERE ItemId > 1;
+
