@@ -39,3 +39,17 @@ UPDATE itemicons
 SET ImageIcon = REPLACE(ImageIcon, '1644242624151', '1651660195037')
 WHERE ItemId > 1;
 
+--Query 8 - Other query
+SELECT itemlist.Name, itemhistory.Date, itemhistory.ItemListId, itemhistory.TrendValue 
+FROM itemlist natural join itemhistory 
+WHERE itemhistory.ItemListId = itemlist.ItemId
+ORDER BY TrendValue DESC 
+LIMIT 10;
+
+--Query 9 -- Other query
+SELECT Date, COUNT(Date) AS NumPos,Trend
+FROM itemhistory 
+WHERE Trend = "positive"
+GROUP BY Date
+Order by NumPos DESC
+LIMIT 10;
